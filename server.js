@@ -4,13 +4,15 @@ var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var GitHubApi = require('github');
 
-var user = {};
+var userObj = {};
+
 var app = express();
 var github = new GitHubApi({
 	    // required
 	    version: "3.0.0",
 	    // optional
 	});
+
 
 
 app.use(express.static(__dirname + '/public'));
@@ -32,14 +34,14 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://localhost:8888/auth/github/callback"
   },
  function(accessToken, refreshToken, profile, done) {
-    user = profile;
+    userObj = profile;
     process.nextTick(function () {
       
       return done(null, profile);
     });
   }
 ));
-
+console.log('user obj',  userObj.username);
 
 app.get('/auth/github', passport.authenticate('github'));
 
@@ -50,20 +52,54 @@ app.get('/auth/github/callback', passport.authenticate('github',{
 		return 	res.redirect('/#/home');
 });
 
-var followers = [];
-var getFollowers = function(){
+//need middleware- get user followers
+
+
+//this does need to  go before, or it won't run
+
+//if I declared the function as a variable (which I could have) I could pass the name of the function in, or adding the route means it happens with each related route 'api/github'
+var userFollowers = function(req, res, next){
+	var followers;
+	//github.user.getFollowingFromUser({}, function(err, data))
 	github.user.getFollowingFromUser({
-	    user: user.username
-	}, function(err, data){
-		 followers = data;
-		 return followers;
-	});
+		    user: "MarkTonkinson"
+		}, function(err, data) {
+			console.log('error', err);
+		    //console.log('just some info', JSON.stringify(data));
+		    var info = JSON.stringify(data)
+		    userObj.followers = info;
+		    console.log('userObj 2nd time', userObj);
+		    //console.log('follower1', followers)
+		    next(); //you have to put next inside
+		})
+	//next() if next is right here it doesn't wait for the process to happen
+	//I just wrote my first piece of middleware :)
+	
 }
 
-app.get('/api/github/following', function(req, res){
-	getFollowers();
-	res.status(200).send(followers);
-});
+
+
+app.get('/api/github/following', userFollowers, function(req, res, next){
+	res.send(userObj.followers);
+	
+
+ });
+
+//what we tried with Jake
+// var followers = [];
+// var getFollowers = function(){
+// 	github.user.getFollowingFromUser({
+// 	    user: user.username
+// 	}, function(err, data){
+// 		 followers = data;
+// 		 return followers;
+// 	});
+// }
+
+// app.get('/api/github/following', function(req, res){
+// 	getFollowers();
+// 	res.status(200).send(followers);
+// });
 
 
 

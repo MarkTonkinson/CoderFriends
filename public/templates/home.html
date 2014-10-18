@@ -1,3 +1,11 @@
 <h1>My Coding Friends</h1>
 
-{{friends}}
+<!-- If comes back as an object -->
+<a href='{{friends.data.url}}'>{{friends.data.login}}</a> <img width="100px" height="auto" src='{{friends.data.avatar_url}}'/>
+
+<!-- If comes back as an array -->
+<div ng-repeat='friend in friends'>
+
+<a href='{{friend.data.url}}'>{{friend.data[0].login}}</a><img width="100px" height="auto" src='{{friend.data[0].avatar_url}}'/>
+
+</div>

@@ -1,26 +1,26 @@
 {
-  "name": "CoderFriends",
+  "name": "CoderFriendsMark",
   "version": "1.0.0",
   "description": "CoderFriends ============",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DevMountain/CoderFriends.git"
+    "url": "https://github.com/MarkTonkinson/CoderFriends.git"
   },
-  "author": "Mark",
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DevMountain/CoderFriends/issues"
+    "url": "https://github.com/MarkTonkinson/CoderFriends/issues"
   },
-  "homepage": "https://github.com/DevMountain/CoderFriends",
+  "homepage": "https://github.com/MarkTonkinson/CoderFriends",
   "dependencies": {
-    "express": "^4.9.7",
+    "express": "^4.9.8",
     "express-session": "^1.9.0",
     "github": "^0.2.2",
-    "gitignore": "^0.1.7",
     "passport": "^0.2.1",
     "passport-github": "^0.1.5"
   }
