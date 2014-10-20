@@ -14,7 +14,7 @@ $routeProvider
 	controller: 'friendCtrl',
 	resolve: {
 		eventData: function($route, githubService){
-			githubService.getFriendActivity($route.current.params.github_username);
+			return githubService.getFriendActivity($route.current.params.github_username);
 		}
 	}
 })
